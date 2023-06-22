@@ -105,7 +105,7 @@ function TableUser(props) {
            onClick={() => setIsShowModalAddNew(true)}
           >Add new user</button>
         </div>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
         <thead>
             <tr>
             <th>
