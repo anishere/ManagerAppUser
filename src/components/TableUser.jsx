@@ -6,7 +6,7 @@ import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser'
 import _ from 'lodash';
 import ModalDeleteUser from './ModalDeleteUser';
-import './TableUser.scss'
+import './tableUser.scss'
 
 function TableUser(props) {
     const [listUsers, setListUsers] = useState([])
