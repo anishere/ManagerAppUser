@@ -6,6 +6,7 @@ import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser'
 import _ from 'lodash';
 import ModalDeleteUser from './ModalDeleteUser';
+import './TableUser.scss'
 
 function TableUser(props) {
     const [listUsers, setListUsers] = useState([])
@@ -19,6 +20,11 @@ function TableUser(props) {
 
     const [isShowModalDeleteUser, setIsShowModalDeleteUser] = useState(false)
     const [dataUserDelete, setDataUserDelete] = useState({})
+
+    // eslint-disable-next-line no-unused-vars
+    const [sortBy, setSortBy] = useState('asc')
+    // eslint-disable-next-line no-unused-vars
+    const [sortField, setSortField] = useState('id')
 
     //truyền hàm để ko bị lỗi 're-render'
     const handleClose = () => {
@@ -79,6 +85,18 @@ function TableUser(props) {
         getUsers(+even.selected + 1)
     }
 
+    const handleSort = (sortField, sortBy) => {
+        //Quản lí sortField, sortBy để khi người dùng back lại trang vẫn sắp xếp như vậy
+        setSortField(sortField)
+        setSortBy(sortBy)
+        //Nếu api sống thì chỉ cần call api bước này và truyền sortField, sortBy
+        //Và Page muốn lấy
+        let cloneListUser = _.clone(listUsers)
+        cloneListUser = _.orderBy(cloneListUser, sortField, sortBy);
+        //Sau đó call api ListUser là ok
+        setListUsers(cloneListUser);
+    }
+
     return (<>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span className='fw-bold'>List Users</span>
@@ -90,9 +108,37 @@ function TableUser(props) {
         <Table striped bordered hover>
         <thead>
             <tr>
-            <th>ID</th>
+            <th>
+                <div className='sort d-flex justify-content-between'>
+                    <span>ID</span>
+                    <span>
+                    <i 
+                        className="fa-solid fa-arrow-down-long px-1"
+                        onClick={() => handleSort('id', 'desc')}
+                    ></i>
+                    <i 
+                        className="fa-solid fa-arrow-up-long"
+                        onClick={() => handleSort('id', 'asc')}
+                    ></i>
+                    </span>
+                </div>
+            </th>
             <th>email</th>
-            <th>First name</th>
+            <th>
+            <div className='sort d-flex justify-content-between'>
+                    <span>First name</span>
+                    <span>
+                    <i 
+                        className="fa-solid fa-arrow-down-long px-1"
+                        onClick={() => handleSort('first_name', 'desc')}
+                    ></i>
+                    <i 
+                        className="fa-solid fa-arrow-up-long"
+                        onClick={() => handleSort('first_name', 'asc')}
+                    ></i>
+                    </span>
+                </div>
+            </th>
             <th>Last name</th>
             <th>Action</th>
             </tr>
