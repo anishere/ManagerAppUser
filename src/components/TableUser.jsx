@@ -7,6 +7,7 @@ import ModalEditUser from './ModalEditUser'
 import _ from 'lodash';
 import ModalDeleteUser from './ModalDeleteUser';
 import './TableUser.scss'
+import {debounce} from 'lodash'
 
 function TableUser(props) {
     const [listUsers, setListUsers] = useState([])
@@ -97,6 +98,21 @@ function TableUser(props) {
         setListUsers(cloneListUser);
     }
 
+    //Dùng lodash debounce bọc hàm để xử lí khi gõ vào ô input call api quá nhiều lần
+    const handleSearchUserS = debounce((e) => {
+        let term = e.target.value
+        console.log('check call api', term)
+        //Nếu api sống thì ta chỉ cần call api và truyền term(keySearch) vào
+        //Lọc term(keySearch) và cập nhật lại list user
+        if (term) {
+            let cloneListUser = _.clone(listUsers)
+            cloneListUser = cloneListUser.filter(item => item.email.includes(term))
+            setListUsers(cloneListUser);
+        } else {
+            getUsers()
+        }
+    }, 300)
+
     return (<>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span className='fw-bold'>List Users</span>
@@ -104,6 +120,14 @@ function TableUser(props) {
            className='btn btn-primary'
            onClick={() => setIsShowModalAddNew(true)}
           >Add new user</button>
+        </div>
+        <div className='my-3 col-4'>
+            <input 
+                className='form-control border-success border-2 rounded-pill col-4'
+                type="text" 
+                placeholder='Search users by email...'
+                onChange={(e) => {handleSearchUserS(e)}}
+            />
         </div>
         <Table striped bordered hover responsive>
         <thead>
