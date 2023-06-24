@@ -8,6 +8,7 @@ import _ from 'lodash';
 import ModalDeleteUser from './ModalDeleteUser';
 import './TableUser.scss'
 import {debounce} from 'lodash'
+import { CSVLink} from "react-csv";
 
 function TableUser(props) {
     const [listUsers, setListUsers] = useState([])
@@ -116,10 +117,28 @@ function TableUser(props) {
     return (<>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span className='fw-bold'>List Users</span>
-          <button
-           className='btn btn-primary'
-           onClick={() => setIsShowModalAddNew(true)}
-          >Add new user</button>
+          <div className='d-flex'>
+            <label htmlFor='importUsers' className='btn btn-primary'>
+                <i class="fa-solid fa-file-import me-1"></i>
+                Import
+            </label>
+            <input id='importUsers' type="file" hidden/>
+            <CSVLink 
+                data={listUsers}
+                filename={"ListUsers.csv"}
+                className="btn btn-primary mx-2"
+            >
+                <i class="fa-solid fa-file-arrow-down me-1"></i>
+                Export
+            </CSVLink>
+            <button
+                className='btn btn-primary'
+                onClick={() => setIsShowModalAddNew(true)}
+            >
+                    <i className="fa-regular fa-plus me-1"></i> 
+                    Add New
+            </button>
+          </div> 
         </div>
         <div className='my-3 col-4'>
             <input 
@@ -177,7 +196,7 @@ function TableUser(props) {
                             <td>{item.first_name}</td>
                             <td>{item.last_name}</td>
                             <td>
-                                <button className='btn btn-warning mx-3'
+                                <button className='btn btn-success mx-3'
                                     onClick={() => {handleEditUser(item)}}
                                 >Edit
                                 </button>
