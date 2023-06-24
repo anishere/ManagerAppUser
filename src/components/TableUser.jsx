@@ -9,6 +9,8 @@ import ModalDeleteUser from './ModalDeleteUser';
 import './TableUser.scss'
 import {debounce} from 'lodash'
 import { CSVLink} from "react-csv";
+import { toast } from 'react-toastify';
+import Papa from "papaparse";
 
 function TableUser(props) {
     const [listUsers, setListUsers] = useState([])
@@ -27,6 +29,9 @@ function TableUser(props) {
     const [sortBy, setSortBy] = useState('asc')
     // eslint-disable-next-line no-unused-vars
     const [sortField, setSortField] = useState('id')
+
+    //Mảng quản lí table export (mảng cha)
+    const [dataExport, setDataExport] = useState([])
 
     //truyền hàm để ko bị lỗi 're-render'
     const handleClose = () => {
@@ -114,6 +119,85 @@ function TableUser(props) {
         }
     }, 300)
 
+    // [ mảng table(cha)
+    //     ["firstname", "lastname", "email"], mảng rowHeader
+    //     ["Ahmed", "Tomi", "ah@smthing.co.com"], rowItem
+    //     ["read", "Label", "rl@smthing.co.com"], rowItem
+    //     ["name", "Min l3b", "ymin@cocococo.com"] rowItem
+
+    // ];
+    const handleExport = (event, done) => {
+        //Mảng Table(cha) 
+        let result = []
+        if(listUsers && listUsers.length > 0) {
+            //Push mảng chứa rowHeader
+            result.push(['Id', 'Email', 'First Name', 'Last Name'])
+            // eslint-disable-next-line array-callback-return
+            listUsers.map((item) => {
+                //Mảng chứa rowItem (mỗi item tương đương một hàng)
+                let arrBody = []
+                arrBody[0] = item.id
+                arrBody[1] = item.email
+                arrBody[2] = item.first_name
+                arrBody[3] = item.last_name
+                result.push(arrBody)
+            })
+            //set mảng table cho state
+            setDataExport(result)
+            done()
+        }
+    }
+
+    const handleImportCSV = (e) => {
+        if(e.target && e.target.files && e.target.files[0]) {
+            let file = e.target.files[0]
+
+            if(file.type !== 'text/csv') {
+                toast.error('Type file is not a CSV file')
+                return 
+            }
+
+            Papa.parse(file, { //hàm thư viện
+                // header: true,
+                complete: function(results) { //hàm thư viện
+                    let rawCSV = results.data // Lấy ra arrTable
+                    if(rawCSV.length > 0) { //Ràng buộc table phải có data
+                        if(rawCSV[0] && rawCSV[0].length === 3) { //Ràng buộc số cột của table
+
+                            // if(rawCSV[0][0] !== 'email' //Ràng buộc tên cột nhưng ko sử dụng
+                            // || rawCSV[0][0] !== 'email' //có thể ko ràng buộc
+                            // || rawCSV[0][0] !== 'email') 
+                            // {
+                            //     toast.error('Format Header in file wrong...')
+                            // } else {
+
+                                let result = []
+                                // eslint-disable-next-line array-callback-return
+                                rawCSV.map((item, index) => { 
+                                    //Bỏ qua dòng đầu tiên là header và
+                                    //ràng buộc số cột của mỗi dòng phải bằng 3
+                                    if(index > 0 && item.length === 3) { 
+                                        let obj = {}
+                                        obj.email = item[0]
+                                        obj.first_name = item[1]
+                                        obj.last_name = item[2]
+                                        result.push(obj)
+                                    }
+                                })
+                                console.log(result)
+                                setListUsers(result)
+                            //}
+                        } else {
+                            toast.error('The number of columns must be THREE')
+                        }
+                    } else {
+                        toast.error('Not found data in CSV file...')
+                    }
+                }
+            });
+        }
+    }
+
     return (<>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span className='fw-bold'>List Users</span>
@@ -122,11 +206,17 @@ function TableUser(props) {
                 <i class="fa-solid fa-file-import me-1"></i>
                 Import
             </label>
-            <input id='importUsers' type="file" hidden/>
+            <input 
+                id='importUsers' 
+                type="file" hidden
+                onChange={(e) => handleImportCSV(e)}
+            />
             <CSVLink 
-                data={listUsers}
+                data={dataExport}
                 filename={"ListUsers.csv"}
                 className="btn btn-primary mx-2"
+                asyncOnClick={true}
+                onClick={handleExport}
             >
                 <i class="fa-solid fa-file-arrow-down me-1"></i>
                 Export
