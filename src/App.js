@@ -1,8 +1,8 @@
 import './App.css';
 import Header from './components/Header';
 import Container from 'react-bootstrap/Container';
-import TableUser from './components/TableUser';
 import { ToastContainer} from 'react-toastify';
+import { Outlet } from 'react-router';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -24,6 +24,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// eslint-disable-next-line no-unused-vars
 const analytics = getAnalytics(app);
 
 function App() {
@@ -31,8 +32,9 @@ function App() {
     <>
     <div className="app-container">
       <Header/>
+
       <Container>
-        <TableUser/>
+        <Outlet />
       </Container>
     </div>
     <ToastContainer

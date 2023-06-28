@@ -203,7 +203,7 @@ function TableUser(props) {
           <span className='fw-bold'>List Users</span>
           <div className='d-flex'>
             <label htmlFor='importUsers' className='btn btn-primary'>
-                <i class="fa-solid fa-file-import me-1"></i>
+                <i className="fa-solid fa-file-import me-1"></i>
                 Import
             </label>
             <input 
@@ -218,7 +218,7 @@ function TableUser(props) {
                 asyncOnClick={true}
                 onClick={handleExport}
             >
-                <i class="fa-solid fa-file-arrow-down me-1"></i>
+                <i className="fa-solid fa-file-arrow-down me-1"></i>
                 Export
             </CSVLink>
             <button

@@ -39,22 +39,22 @@ function ModalAddNew(props) {
           <Modal.Title>Edit an user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label">Name</label>
+            <div classNameName="mb-3">
+                <label htmlFor="exampleInputEmail1" classNameName="form-label">Name</label>
                 <input 
                     type="text" 
-                    className="form-control" 
+                    classNameName="form-control" 
                     id="exampleInputEmail1" 
                     aria-describedby="emailHelp"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
             </div>
-            <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label">Job</label>
+            <div classNameName="mb-3">
+                <label htmlFor="exampleInputPassword1" classNameName="form-label">Job</label>
                 <input 
                 type="text" 
-                className="form-control" 
+                classNameName="form-control" 
                 id="exampleInputPassword1"
                 value={job}
                 onChange={(e) => setJob(e.target.value)}
