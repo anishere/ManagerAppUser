@@ -1,0 +1,73 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto 0;
+
+    .title {
+        text-align: center;
+        font-size: 2.3rem;
+        font-weight: 600;
+    }
+
+    .text {
+        font-weight: 500;
+        padding-bottom: 5px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 2px;
+        background-color: rgba(22, 24, 35, 0.06);
+        border: 1px solid rgba(22, 24, 35, 0.12);
+        padding-inline-start: 12px;
+        color: rgba(22, 24, 35, 1);
+        caret-color: rgb(254, 44, 85);
+        color: rgba(22, 24, 35, 1);
+        margin-bottom: 12px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .wrap-password {
+        position: relative;
+        
+        i {
+            position: absolute;
+            top: 17px;
+            right: 10px;
+            cursor: pointer;
+        }
+    }
+
+    button {
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 4px;
+        border: none;
+        color: rgba(22, 24, 35, .12);
+        background-color: rgba(22, 24, 35, .12);
+        font-size: 1rem;
+        line-height: 22px;
+        font-weight: 700;
+
+        &.active {
+            background-color: rgba(254, 44, 85, 1);
+            color: white;
+        }
+    }
+
+    button[disabled=disabled], button:disabled {
+        cursor: not-allowed;
+        background-color: rgb(229, 229, 229) !important;
+    }
+
+    .goBack {
+        text-align: center;
+        margin-top: 40px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+}

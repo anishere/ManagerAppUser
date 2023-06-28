@@ -8,11 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './components/Home/Home.jsx'
 import TableUser from './components/TableUser';
+import Login from './components/Login/Login';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-
 
 const router = createBrowserRouter([
   {
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <TableUser />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       }
     ],
   },

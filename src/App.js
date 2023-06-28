@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import Header from './components/Header';
 import Container from 'react-bootstrap/Container';
 import { ToastContainer} from 'react-toastify';
