@@ -6,8 +6,17 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import './header.scss';
 import logoHeader from '../assets/img/React-icon.svg.png'
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Header(props) {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/')
+        toast.success('You have logged out')
+    }
+
     return (
         <>
         <Navbar expand="lg" className="bg-body-tertiary navbar">
@@ -25,7 +34,10 @@ function Header(props) {
             <Nav>
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
                     <Link to='/login' className='dropdown-item' >Log in</Link>
-                    <Link to='/logout' className='dropdown-item' >Log out</Link>
+                    <Link 
+                        className='dropdown-item' 
+                        onClick={() => handleLogout()}
+                    >Log out</Link>
                 </NavDropdown>
             </Nav>
             </Navbar.Collapse>
