@@ -8,11 +8,16 @@ import logoHeader from '../assets/img/React-icon.svg.png'
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
 
 function Header(props) {
     const navigate = useNavigate()
+
+    const { user, logout } = useContext(UserContext);
+
     const handleLogout = () => {
-        localStorage.removeItem('token')
+        logout()
         navigate('/')
         toast.success('You have logged out')
     }
@@ -28,16 +33,25 @@ function Header(props) {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <Link to='/' className='nav-link' >Home</Link>
-                <Link to='/users' className='nav-link' >Users</Link>
+                {((user && user.auth) || window.location.pathname === '/') &&     
+                <>
+                    <Link to='/' className='nav-link' >Home</Link>               
+                    <Link to='/users' className='nav-link' >Users</Link>
+                </>
+                }    
             </Nav>
             <Nav>
+                {user && user.auth === true
+                    && <span className='nav-link'>Welcome {user.email}</span>
+                }
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
-                    <Link to='/login' className='dropdown-item' >Log in</Link>
-                    <Link 
-                        className='dropdown-item' 
-                        onClick={() => handleLogout()}
-                    >Log out</Link>
+                    {user && user.auth === true
+                        ? <Link 
+                            className='dropdown-item' 
+                            onClick={() => handleLogout()}
+                            >Log out</Link>
+                        : <Link to='/login' className='dropdown-item' >Log in</Link>
+                    }     
                 </NavDropdown>
             </Nav>
             </Navbar.Collapse>

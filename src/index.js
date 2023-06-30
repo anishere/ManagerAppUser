@@ -9,6 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './components/Home/Home.jsx'
 import TableUser from './components/TableUser';
 import Login from './components/Login/Login';
+import { UserProvider } from './context/userContext.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -37,9 +38,11 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <UserProvider>
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  </UserProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

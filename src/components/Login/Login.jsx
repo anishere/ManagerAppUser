@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './login.scss'
 import {loginApi} from '../../services/UserService'
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 
 function Login(props) {
     const [name, setName] = useState('')
@@ -11,20 +13,21 @@ function Login(props) {
     const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
+    const { login } = useContext(UserContext);
 
-    useEffect(() => {
-        let token = localStorage.getItem('token')
-        if(token) {
-            navigate('/')
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    // useEffect(() => {
+    //     let token = localStorage.getItem('token')
+    //     if(token) {
+    //         navigate('/')
+    //     }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // },[])
 
     const  handleLogin = async () => {
         setIsLoading(true)
         let res = await loginApi(name, password)
         if(res && res.token) {
-            localStorage.setItem('token', res.token)
+            login(name, res.token)
             navigate('/')
             toast.success('Log in success')
         } else {
@@ -33,6 +36,10 @@ function Login(props) {
             }
         }
         setIsLoading(false)
+    }
+
+    const handleBack = () => {
+        navigate('/')
     }
 
     return (
@@ -62,12 +69,14 @@ function Login(props) {
                 disabled = {name && password ? false : true}
                 onClick={() => handleLogin()}
             >
-                {isLoading && <i class="fas fa-circle-notch fa-spin"></i>}
+                {isLoading && <i className="fas fa-circle-notch fa-spin"></i>}
                 &nbsp; Log in
             </button>
             <div className='goBack'>
-                <i className="fa-solid fa-angle-left mx-1"></i>
-                Go back
+                <span onClick={() => {handleBack()}}>
+                    <i className="fa-solid fa-angle-left mx-1"></i>
+                    Go back
+                </span>
             </div>
         </div>
     );
