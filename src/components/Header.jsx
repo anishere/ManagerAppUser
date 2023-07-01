@@ -18,8 +18,8 @@ function Header(props) {
 
     const handleLogout = () => {
         logout()
-        navigate('/')
         toast.success('You have logged out')
+        navigate('/')
     }
 
     return (
@@ -41,15 +41,15 @@ function Header(props) {
                 }    
             </Nav>
             <Nav>
-                {user && user.auth === true
+                {user && user.auth
                     && <span className='nav-link'>Welcome {user.email}</span>
                 }
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
                     {user && user.auth === true
-                        ? <Link 
+                        ? <span 
                             className='dropdown-item' 
                             onClick={() => handleLogout()}
-                            >Log out</Link>
+                            >Log out</span>
                         : <Link to='/login' className='dropdown-item' >Log in</Link>
                     }     
                 </NavDropdown>

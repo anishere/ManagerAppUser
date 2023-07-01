@@ -2,7 +2,6 @@ import './App.scss';
 import Header from './components/Header';
 import Container from 'react-bootstrap/Container';
 import { ToastContainer} from 'react-toastify';
-import { Outlet } from 'react-router';
 import { UserContext } from './context/userContext.jsx';
 import { useContext } from 'react';
 
@@ -10,6 +9,7 @@ import { useContext } from 'react';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { useEffect } from 'react';
+import AppRoutes from './router/AppRoutes';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -34,7 +34,7 @@ function App() {
   const { login } = useContext(UserContext);
 
   useEffect(() => {
-    if(localStorage.getItem('token') && localStorage.getItem('email')) {
+    if(localStorage.getItem('token')) {
       login(localStorage.getItem('email'), localStorage.getItem('token'))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,9 +44,8 @@ function App() {
     <>
     <div className="app-container">
       <Header/>
-
       <Container>
-        <Outlet />
+        <AppRoutes/>
       </Container>
     </div>
     <ToastContainer
