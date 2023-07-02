@@ -6,20 +6,17 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import './header.scss';
 import logoHeader from '../assets/img/React-icon.svg.png'
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 
 function Header(props) {
-    const navigate = useNavigate()
 
     const { user, logout } = useContext(UserContext);
 
     const handleLogout = () => {
         logout()
         toast.success('You have logged out')
-        navigate('/')
     }
 
     return (
@@ -46,10 +43,10 @@ function Header(props) {
                 }
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
                     {user && user.auth === true
-                        ? <span 
+                        ? <Link to='/'
                             className='dropdown-item' 
                             onClick={() => handleLogout()}
-                            >Log out</span>
+                            >Log out</Link>
                         : <Link to='/login' className='dropdown-item' >Log in</Link>
                     }     
                 </NavDropdown>

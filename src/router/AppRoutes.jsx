@@ -5,6 +5,7 @@ import Home from '../components/Home/Home';
 import Login from '../components/Login/Login';
 import TableUser from '../components/TableUser';
 import PrivateRoute from './PrivateRoute';
+import NotFound from '../components/NotFound';
 
 function AppRoutes(props) {
     return (
@@ -20,6 +21,7 @@ function AppRoutes(props) {
                         </PrivateRoute>
                     }
                 />
+                <Route path='*' element={<NotFound/>}/>
             </Routes>
         </div>
     );

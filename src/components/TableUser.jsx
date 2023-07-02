@@ -200,9 +200,9 @@ function TableUser(props) {
     }
 
     return (<>
-        <div className='my-3 d-flex justify-content-between align-items-center'>
+        <div className='my-3 d-sm-flex justify-content-between align-items-center'>
           <span className='fw-bold'>List Users</span>
-          <div className='d-flex'>
+          <div className='d-flex my-sm-0 my-2'>
             <label htmlFor='importUsers' className='btn btn-primary'>
                 <i className="fa-solid fa-file-import me-1"></i>
                 Import
@@ -231,7 +231,7 @@ function TableUser(props) {
             </button>
           </div> 
         </div>
-        <div className='my-3 col-4'>
+        <div className='my-3 col-12 col-sm-4'>
             <input 
                 className='form-control border-success border-2 rounded-pill col-4'
                 type="text" 
@@ -302,27 +302,29 @@ function TableUser(props) {
             }
         </tbody>
         </Table>
-        <ReactPaginate
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={totalPages}
+        <div className='Paginate'>
+            <ReactPaginate
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
+            pageCount={totalPages}
 
-        previousLabel="< previous"
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item"
-        previousLinkClassName="page-link"
-        nextClassName="page-item"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="active"
-        renderOnZeroPageCount={null}
-        />
+            previousLabel="< previous"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+            />
+        </div>  
         <ModalAddNew 
         show={isShowModalAddNew} 
         handleClose={handleClose}

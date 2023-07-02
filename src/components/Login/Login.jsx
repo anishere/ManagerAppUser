@@ -25,7 +25,7 @@ function Login(props) {
 
     const  handleLogin = async () => {
         setIsLoading(true)
-        let res = await loginApi(name, password)
+        let res = await loginApi(name.trim(), password)
         if(res && res.token) {
             login(name, res.token)
             navigate('/')
@@ -40,6 +40,12 @@ function Login(props) {
 
     const handleBack = () => {
         navigate('/')
+    }
+
+    const handlePressEnter = (e) => {
+        if(e.key === 'Enter') {
+            handleLogin()
+        }
     }
 
     return (
@@ -58,6 +64,7 @@ function Login(props) {
                     placeholder='Password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => handlePressEnter(e)}
                 />
                 <i 
                     className={isShowPassword ? "fa-solid fa-eye" : 'fa-sharp fa-solid fa-eye-slash'}
