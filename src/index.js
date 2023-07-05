@@ -7,17 +7,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter } from "react-router-dom";
 import App from './App';
-import { UserProvider } from './context/userContext';
+// import { UserProvider } from './context/userContext';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor } from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <UserProvider>
-    <React.StrictMode>
-      <BrowserRouter>
-        <App/>
-      </BrowserRouter>
-    </React.StrictMode>
-  </UserProvider>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <BrowserRouter>
+          <App/>
+        </BrowserRouter>
+      </React.StrictMode>
+    </PersistGate>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

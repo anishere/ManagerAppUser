@@ -1,41 +1,34 @@
 import React, { useState } from 'react';
 import './login.scss'
-import {loginApi} from '../../services/UserService'
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import { useContext } from 'react';
-import { UserContext } from '../../context/userContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/authSlice';
+import { useEffect } from 'react';
 
 function Login(props) {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [isShowPassword, setIsShowPassword] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
-    const { login } = useContext(UserContext);
 
-    // useEffect(() => {
-    //     let token = localStorage.getItem('token')
-    //     if(token) {
-    //         navigate('/')
-    //     }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // },[])
 
-    const  handleLogin = async () => {
-        setIsLoading(true)
-        let res = await loginApi(name.trim(), password)
-        if(res && res.token) {
-            login(name, res.token)
+    //redux
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state) => state.auth.authenticated);
+    const loading = useSelector((state) => state.auth.loading);
+    const error = useSelector((state) => state.auth.error);
+
+    //nếu call api thanh công thì res sẽ có email
+    //fail bại sẽ ko có email trả về
+    //**** */
+    const  handleLogin = () => {
+        const res = dispatch(login({email : name.trim(), password}))
+        if(res && res.arg.email === 'eve.holt@reqres.in'){
+            toast.success('Login success')
             navigate('/')
-            toast.success('Log in success')
-        } else {
-            if( res && res.status === 400) {
-                toast.error(res.data.error)
-            }
         }
-        setIsLoading(false)
     }
 
     const handleBack = () => {
@@ -46,6 +39,17 @@ function Login(props) {
         if(e.key === 'Enter') {
             handleLogin()
         }
+    }
+
+    useEffect(() => {
+        if( error ) {
+            toast.error('User not found')
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error]);
+    
+    if( isAuth ) {
+        navigate('/')
     }
 
     return (
@@ -76,7 +80,7 @@ function Login(props) {
                 disabled = {name && password ? false : true}
                 onClick={() => handleLogin()}
             >
-                {isLoading && <i className="fas fa-circle-notch fa-spin"></i>}
+                {loading && <i className="fas fa-circle-notch fa-spin"></i>}
                 &nbsp; Log in
             </button>
             <div className='goBack'>

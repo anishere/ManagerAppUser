@@ -7,15 +7,17 @@ import './header.scss';
 import logoHeader from '../assets/img/React-icon.svg.png'
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { useContext } from 'react';
-import { UserContext } from '../context/userContext';
+import { logout } from '../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Header(props) {
-
-    const { user, logout } = useContext(UserContext);
+    //redux
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state) => state.auth.isAuthenticated);
+    const email = useSelector((state) => state.auth.email);
 
     const handleLogout = () => {
-        logout()
+        dispatch(logout())
         toast.success('You have logged out')
     }
 
@@ -30,7 +32,7 @@ function Header(props) {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                {((user && user.auth) || window.location.pathname === '/') &&     
+                {(isAuth === true || window.location.pathname === '/') &&     
                 <>
                     <Link to='/' className='nav-link' >Home</Link>               
                     <Link to='/users' className='nav-link' >Users</Link>
@@ -38,11 +40,11 @@ function Header(props) {
                 }    
             </Nav>
             <Nav>
-                {user && user.auth
-                    && <span className='nav-link'>Welcome {user.email}</span>
+                {isAuth
+                    && <span className='nav-link'>Welcome {email}</span>
                 }
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
-                    {user && user.auth === true
+                    {isAuth === true
                         ? <Link to='/'
                             className='dropdown-item' 
                             onClick={() => handleLogout()}
